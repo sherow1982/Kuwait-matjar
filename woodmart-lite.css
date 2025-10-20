@@ -1,0 +1,160 @@
+/* ==========================================================================
+   Woodmart-like Lite CSS (v4 - Responsive Grid)
+   Purpose: Professional card style with responsive grid for all devices.
+   ========================================================================== */
+
+/* Root variables */
+:root {
+  --container: 1200px;
+  --gutter: 1rem;
+  --radius-product: 12px;
+  --shadow-1: 0 4px 15px rgba(0,0,0,.08);
+  --border-1: 1px solid #f0f0f0;
+  --bg: #ffffff;
+  --bg-soft: #f9f9f9;
+  --text: #222;
+  --text-2: #555;
+  --muted: #999;
+  --accent: #3aa77a;
+  --sale-badge-bg: #e74c3c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --border-1: 1px solid #333;
+    --bg: #1e1e1e;
+    --bg-soft: #121212;
+    --text: #f5f5f5;
+    --text-2: #bbb;
+    --muted: #888;
+    --shadow-1: 0 4px 15px rgba(0,0,0,.3);
+  }
+}
+
+/* Base reset & Layout */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg-soft);
+  line-height: 1.6;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+.container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: 2rem; }
+
+/* Header & Footer */
+.header { background: var(--bg); border-block-end: var(--border-1); position: sticky; top: 0; z-index: 1000; }
+.header__inner { height: 70px; display: flex; align-items: center; }
+.header__logo { font-weight: 700; font-size: 1.2rem; }
+.header__spacer { flex: 1; }
+.footer { background: var(--bg); border-block-start: var(--border-1); margin-top: 3rem; padding: 1.5rem 0; }
+.footer__bottom { text-align: center; color: var(--muted); font-size: .9rem; }
+
+/* === Products Grid (Responsive) === */
+.products {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 768px) {
+  .products {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .products {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* === Product Card (Professional Style) === */
+.product {
+  background: var(--bg);
+  border-radius: var(--radius-product);
+  border: var(--border-1);
+  overflow: hidden;
+  transition: box-shadow .3s ease, transform .3s ease;
+}
+.product:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-1);
+}
+
+.product__media {
+  position: relative;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+.product__media img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  transition: transform .35s ease;
+}
+.product:hover .product__media img {
+  transform: scale(1.05);
+}
+
+.product__badge {
+  position: absolute;
+  top: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  z-index: 2;
+  background-color: var(--sale-badge-bg);
+  color: #fff;
+}
+
+.product__body {
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.product__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.price s {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* RTL adjustments */
+html[dir="rtl"] .product__badge { 
+  left: 10px; 
+  right: auto;
+}
+
+/* Product Details Page Styles */
+.product-details { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; align-items: start; }
+.product-gallery img { border-radius: var(--radius-product); box-shadow: var(--shadow-1); }
+.product-info .price { font-size: 1.5rem; margin-block: 1rem; justify-content: flex-start; }
+.product-description { margin-top: 1.5rem; line-height: 1.7; color: var(--text-2); white-space: pre-wrap; }
+.buy-button { margin-top: 2rem; padding: 1rem 2rem; font-size: 1.1rem; width: 100%; }
+@media (max-width: 768px) { 
+  .product-details { grid-template-columns: 1fr; }
+  .product-info .price { justify-content: center; }
+  .product-info { text-align: center; }
+}
