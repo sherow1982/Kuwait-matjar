@@ -4,15 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تفاصيل المنتج</title>
-    <link rel="stylesheet" href="https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/assets/woodmart-lite.css?raw=1">
-    <style>
-        .product-details { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; align-items: start; }
-        .product-gallery img { border-radius: var(--radius-product); box-shadow: var(--shadow-1); }
-        .product-info .price { font-size: 1.5rem; margin-block: 1rem; }
-        .product-description { margin-top: 1.5rem; line-height: 1.7; color: var(--text-2); white-space: pre-wrap; }
-        .buy-button { margin-top: 2rem; padding: 1rem 2rem; font-size: 1.1rem; width: 100%; }
-        @media (max-width: 768px) { .product-details { grid-template-columns: 1fr; } }
-    </style>
+
+    <!-- === التغيير هنا: تم تحديث المسار ليقرأ من الجذر مباشرة === -->
+    <link rel="stylesheet" href="./woodmart-lite.css">
+
 </head>
 <body>
     <header class="header">
@@ -39,31 +34,20 @@
         const escapeHTML = (str) => String(str ?? '').replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
         const parsePrice = (priceStr) => priceStr ? parseFloat(String(priceStr).replace(/[^0-9.]/g, '')) : null;
         const formatKD = (val) => typeof val === 'number' ? new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val) : '';
-
-        /**
-         * --- التغيير الأول: إضافة نفس دالة الـ Slug ---
-         * يجب أن تكون هذه الدالة مطابقة تمامًا للتي في index.html.
-         */
-        const slugify = (text) => {
-            if (!text) return '';
-            return text.toString().toLowerCase().trim()
-                .replace(/\s+/g, '-')
-                .replace(/[^\u0600-\u06FFa-z0-9-]/g, '')
-                .replace(/-+/g, '-');
-        };
+        const slugify = (text) => text ? text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\u0600-\u06FFa-z0-9-]/g, '').replace(/-+/g, '-') : '';
 
         const renderProductDetails = (product) => {
             if (!product) {
-                content.innerHTML = '<p>عفواً، هذا المنتج غير موجود أو تم تغيير الرابط.</p>';
+                content.innerHTML = '<p>عفواً، هذا المنتج غير موجود.</p>';
                 return;
             }
 
-            document.title = product['العنوان']; // تحديث عنوان الصفحة
+            document.title = product['العنوان'];
             
             const title = escapeHTML(product['العنوان']);
             const image = escapeHTML(product['رابط الصورة']);
             const description = escapeHTML(product['الوصف']).replace(/\n/g, '<br>');
-            const originalLink = escapeHTML(product['الرابط']);
+            const originalLink = product['الرابط'];
             
             const salePriceNum = parsePrice(product['السعر المخفّض']);
             const regularPriceNum = parsePrice(product['السعر']);
@@ -89,20 +73,15 @@
 
         (async () => {
             try {
-                // --- التغيير الثاني: قراءة اسم المنتج (Slug) من الرابط ---
                 const params = new URLSearchParams(window.location.search);
                 const productSlug = params.get('name');
-
                 if (!productSlug) throw new Error('رابط المنتج غير صحيح.');
 
                 const res = await fetch('https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/data/products-template.json?raw=1', { cache: 'no-store' });
                 if (!res.ok) throw new Error('فشل تحميل بيانات المنتجات');
                 
                 const allProducts = await res.json();
-                
-                // --- التغيير الثالث: البحث عن المنتج عبر مطابقة الـ Slug ---
                 const product = allProducts.find(p => slugify(p['العنوان']) === productSlug);
-
                 renderProductDetails(product);
 
             } catch (error) {
