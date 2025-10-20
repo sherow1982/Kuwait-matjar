@@ -1,0 +1,68 @@
+const DATA_URL = 'https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/data/products-template.json?raw=1';
+const container = document.getElementById('products-container');
+
+const slugify = (text) => text ? text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\u0600-\u06FFa-z0-9-]/g, '').replace(/-+/g, '-') : '';
+const formatKD = (val) => typeof val === 'number' ? new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val) : '';
+const parsePrice = (priceStr) => priceStr ? parseFloat(String(priceStr).replace(/[^0-9.]/g, '')) : null;
+
+const createProductCard = (p = {}) => {
+    const title = p['العنوان'] || '';
+    const image = p['رابط الصورة'] || '';
+    const productSlug = slugify(title);
+    const productPageLink = `./product.html?name=${productSlug}`;
+    
+    const salePriceNum = parsePrice(p['السعر المخفّض']);
+    const regularPriceNum = parsePrice(p['السعر']);
+    
+    const currentPriceHTML = formatKD(salePriceNum || regularPriceNum);
+    const oldPriceHTML = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
+    
+    let saleBadge = '';
+    if (salePriceNum && regularPriceNum && regularPriceNum > salePriceNum) {
+        const discount = Math.round(((regularPriceNum - salePriceNum) / regularPriceNum) * 100);
+        saleBadge = `<span class="product__badge">-${discount}%</span>`;
+    }
+
+    return `
+        <div class="product">
+            <a href="${productPageLink}" target="_blank" rel="noopener noreferrer" class="product__media">
+                ${saleBadge}
+                <img src="${image}" alt="${title}" loading="lazy" decoding="async">
+            </a>
+            <div class="product__body">
+                <h3 class="product__title">
+                    <a href="${productPageLink}" target="_blank" rel="noopener noreferrer">${title}</a>
+                </h3>
+                <div class="price">
+                    ${oldPriceHTML}
+                    <span>${currentPriceHTML}</span>
+                </div>
+            </div>
+        </div>
+    `;
+};
+
+const renderProducts = (items) => {
+    const productsGrid = document.createElement('div');
+    productsGrid.className = 'products';
+    if (items?.length) {
+        productsGrid.innerHTML = items.map(createProductCard).join('');
+    } else {
+        productsGrid.innerHTML = '<p>عفواً، لم يتم العثور على منتجات حالياً.</p>';
+    }
+    if(container) container.appendChild(productsGrid);
+};
+
+(async () => {
+    if (container) {
+        try {
+            const res = await fetch(DATA_URL);
+            if (!res.ok) throw new Error('فشل تحميل المنتجات');
+            const items = await res.json();
+            renderProducts(items);
+        } catch (error) {
+            console.error(error);
+            container.innerHTML += '<p>حدث خطأ أثناء تحميل المنتجات.</p>';
+        }
+    }
+})();
