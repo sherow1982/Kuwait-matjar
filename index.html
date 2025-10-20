@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ar-KW" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>المتجر الكويتي - منتجات مميزة</title>
+    <meta name="description" content="منتجات مميزة يتم تحديثها تلقائيًا من المتجر الكويتي.">
+
+    <!-- تحسينات SEO -->
+    <link rel="canonical" href="https://sherow1982.github.io/matjar-Kuwait/">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="theme-color" content="#0ea5e9">
+
+    <!-- الأنماط: تحميل مسبق + الربط القياسي -->
+    <link rel="preload" href="./style.css" as="style" fetchpriority="high">
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Open Graph الأساسية -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_KW">
+    <meta property="og:site_name" content="المتجر الكويتي">
+    <meta property="og:title" content="المتجر الكويتي - منتجات مميزة">
+    <meta property="og:description" content="منتجات مميزة يتم تحديثها تلقائيًا من المتجر الكويتي.">
+    <meta property="og:url" content="https://sherow1982.github.io/matjar-Kuwait/">
+    <meta property="og:image" content="https://sherow1982.github.io/matjar-Kuwait/assets/img/og-image.jpg">
+    <meta property="og:image:alt" content="المتجر الكويتي - صورة المشاركة">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="المتجر الكويتي - منتجات مميزة">
+    <meta name="twitter:description" content="منتجات مميزة يتم تحديثها تلقائيًا من المتجر الكويتي.">
+    <meta name="twitter:image" content="https://sherow1982.github.io/matjar-Kuwait/assets/img/og-image.jpg">
+
+    <!-- أيقونات -->
+    <link rel="icon" href="./assets/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="./site.webmanifest">
+
+    <!-- Structured Data: WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"WebSite",
+      "url":"https://sherow1982.github.io/matjar-Kuwait/",
+      "name":"المتجر الكويتي",
+      "inLanguage":"ar-KW",
+      "potentialAction":{
+        "@type":"SearchAction",
+        "target":"https://sherow1982.github.io/matjar-Kuwait/?q={search_term_string}",
+        "query-input":"required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Structured Data: Organization -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Organization",
+      "name":"المتجر الكويتي",
+      "url":"https://sherow1982.github.io/matjar-Kuwait/"
+    }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#products">تخطي إلى المنتجات</a>
+
+    <header>
+      <h1>المتجر الكويتي</h1>
+      <p>منتجات مميزة يتم تحديثها تلقائيًا</p>
+    </header>
+
+    <!-- شبكة المنتجات: تحتوي عنصرًا بدائيًا كنسخة بدون JavaScript -->
+    <main id="products" class="grid" aria-live="polite" aria-busy="true" role="list">
+      <section class="products">
+        <article class="product-card" role="listitem">
+          <div class="product-media">
+            <img
+              src="./assets/img/placeholder-1.jpg"
+              alt="منتج"
+              width="600" height="600"
+              loading="lazy" decoding="async">
+          </div>
+          <div class="card-body">
+            <h2 class="product-title">
+              <a href="#">منتج تجريبي</a>
+            </h2>
+            <div class="price">
+              <span class="current">KD 9.90</span>
+              <span class="old">KD 12.00</span>
+            </div>
+            <div class="rating" data-score="4" aria-label="تقييم 4 من 5"></div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="#">أضف للسلة</a>
+              <a class="btn btn-outline" href="#">التفاصيل</a>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2025 المتجر الكويتي</p>
+    </footer>
+
+    <noscript>يرجى تفعيل JavaScript لعرض المنتجات.</noscript>
+
+    <script type="module">
+      // مسارات محتملة لملف المنتجات
+      const DATA_CANDIDATES = [
+        './products/products.json',
+        './feed/products.json',
+        './data/products.json',
+        './products.json'
+      ];
+
+      const grid = document.getElementById('products');
+
+      // دالة تبسيط للهروب من أحرف HTML لتفادي الحقن
+      const escapeHTML = (v) => String(v ?? '')
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;');
+
+      // تنسيق ديناري كويتي إذا كانت القيمة رقمية
+      const formatKD = (val) => {
+        if (typeof val === 'number') {
+          try {
+            return new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val);
+          } catch { /* fallback */ }
+        }
+        return String(val ?? '');
+      };
+
+      const detailsHref = (p) => (p && p.slug)
+        ? `./products/${p.slug}.html`
+        : (p && p.link ? p.link : '#');
+
+      const productCard = (p = {}) => {
+        const title = escapeHTML(p.title || 'منتج تجريبي');
+        const img   = escapeHTML(p.image || './assets/img/placeholder-1.jpg');
+        const alt   = escapeHTML(p.alt || p.title || 'منتج');
+        const href  = escapeHTML(detailsHref(p));
+        const badge = p.badge ? `<span class="badge">${escapeHTML(p.badge)}</span>` : '';
+        const cur   = p.price !== undefined ? formatKD(p.price) : 'KD 9.90';
+        const old   = p.oldPrice !== undefined ? formatKD(p.oldPrice) : 'KD 12.00';
+        const rating= Number.isFinite(p.rating) ? p.rating : 4;
+
+        return `
+          <article class="product-card" role="listitem">
+            <div class="product-media">
+              <img src="${img}" alt="${alt}" width="600" height="600" loading="lazy" decoding="async">
+              ${badge}
+            </div>
+            <div class="card-body">
+              <h2 class="product-title">
+                <a href="${href}">${title}</a>
+              </h2>
+              <div class="price">
+                <span class="current">${cur}</span>
+                <span class="old">${old}</span>
+              </div>
+              <div class="rating" data-score="${rating}" aria-label="تقييم ${rating} من 5"></div>
+              <div class="card-actions">
+                <a class="btn btn-primary" href="${escapeHTML(p.buy || href)}">أضف للسلة</a>
+                <a class="btn btn-outline" href="${href}">التفاصيل</a>
+              </div>
+            </div>
+          </article>
+        `;
+      };
+
+      const injectItemListLD = (items = []) => {
+        try {
+          const head = document.head || document.getElementsByTagName('head')[0];
+          const data = {
+            "@context":"https://schema.org",
+            "@type":"ItemList",
+            "itemListElement": items.slice(0, 12).map((p, i) => ({
+              "@type":"ListItem",
+              "position": i + 1,
+              "url": detailsHref(p)
+            }))
+          };
+          const s = document.createElement('script');
+          s.type = 'application/ld+json';
+          s.textContent = JSON.stringify(data);
+          head.appendChild(s);
+        } catch { /* تجاهل */ }
+      };
+
+      const render = (items) => {
+        if (!grid) return;
+        if (Array.isArray(items) && items.length) {
+          const html = items.slice(0, 12).map(productCard).join('');
+          grid.innerHTML = `<section class="products">${html}</section>`;
+          injectItemListLD(items);
+        } else {
+          // تبقي النسخة البدائية إن لم تتوفر بيانات
+        }
+        grid.setAttribute('aria-busy','false');
+      };
+
+      (async () => {
+        let items = null;
+        for (const url of DATA_CANDIDATES) {
+          try {
+            const res = await fetch(url, { cache: 'no-store' });
+            if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
+              items = await res.json();
+              break;
+            }
+          } catch { /* جرب المسار التالي */ }
+        }
+        render(items);
+      })();
+    </script>
+  </body>
+</html>

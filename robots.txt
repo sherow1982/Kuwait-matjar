@@ -1,0 +1,8 @@
+# robots.txt for Kuwait-matjar (GitHub Pages)
+
+User-agent: *
+Disallow:
+
+# Sitemaps (absolute URLs)
+Sitemap: https://sherow1982.github.io/Kuwait-matjar/sitemap.xml
+Sitemap: https://sherow1982.github.io/Kuwait-matjar/sitemap-products.xml

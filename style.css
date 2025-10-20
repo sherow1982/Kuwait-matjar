@@ -1,0 +1,122 @@
+/* سِمات عامة ومتغيرات */
+:root {
+  color-scheme: light dark;
+
+  --bg: #f5f5f7;
+  --text: #111111;
+  --muted: #555555;
+  --card: #ffffff;
+  --brand: #0b5;       /* أخضر العلامة */
+  --brand-contrast: #ffffff;
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  --radius: 12px;
+  --gap: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1214;
+    --text: #e7e7e7;
+    --muted: #b0b0b0;
+    --card: #171a1c;
+    --brand: #14b8a6;         /* درجة أنسب على الداكن */
+    --brand-contrast: #032e2a;/* تباين جيد على الخلفية الفاتحة داخل عناصر البراند */
+    --shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* الأساس */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+/* الترويسة والتذييل */
+header,
+footer {
+  text-align: center;
+  padding-block: 16px;
+  padding-inline: 16px;
+  background: var(--brand);
+  color: var(--brand-contrast);
+}
+header h1,
+footer p { margin: 4px 0; }
+
+/* الشبكة */
+main.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--gap);
+  padding: 16px;
+}
+
+/* البطاقة */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  text-align: center;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.10);
+}
+
+/* صورة البطاقة: نسبة أبعاد متجاوبة */
+.card img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+/* نصوص البطاقة */
+.card h2 {
+  margin: 8px 0;
+  font-size: 16px;
+}
+.card p {
+  font-size: 13px;
+  color: var(--muted);
+}
+.price {
+  font-weight: bold;
+  color: var(--brand);
+}
+
+/* الروابط والتركيز */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover { text-decoration: underline; }
+a:focus-visible,
+.card:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* صور عامة داخل المحتوى */
+main img { max-width: 100%; }
+
+/* تقليل الحركة عند تفضيل المستخدم */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

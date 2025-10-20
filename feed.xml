@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
+  <channel>
+    <title>Matjar Kuwait - Products</title>
+    <link>https://sherow1982.github.io/Kuwait-matjar/</link>
+    <description>Latest products from Matjar Kuwait</description>
+
+    <!-- عنصر 1 -->
+    <item>
+      <g:id>SKU-0001</g:id>
+      <g:title>ساعة ذكية مقاومة للماء</g:title>
+      <g:description>ساعة ذكية مع تتبع اللياقة وإشعارات الهاتف وبطارية تدوم حتى 7 أيام.</g:description>
+      <g:link>https://sherow1982.github.io/Kuwait-matjar/sku-0001.html</g:link>
+      <g:image_link>https://sherow1982.github.io/Kuwait-matjar/assets/images/sku-0001.jpg</g:image_link>
+      <g:availability>in_stock</g:availability>
+      <g:condition>new</g:condition>
+      <g:price>19.90 KWD</g:price>
+      <g:brand>Matjar Kuwait</g:brand>
+      <g:identifier_exists>no</g:identifier_exists>
+      <g:shipping>
+        <g:country>KW</g:country>
+        <g:service>Standard</g:service>
+        <g:price>0.00 KWD</g:price>
+      </g:shipping>
+    </item>
+
+    <!-- عنصر 2 -->
+    <item>
+      <g:id>SKU-0002</g:id>
+      <g:title>سماعات لاسلكية بخاصية عزل الضوضاء</g:title>
+      <g:description>سماعات بلوتوث خفيفة بميكروفون واضح وعزل فعال للضوضاء.</g:description>
+      <g:link>https://sherow1982.github.io/Kuwait-matjar/sku-0002.html</g:link>
+      <g:image_link>https://sherow1982.github.io/Kuwait-matjar/assets/images/sku-0002.jpg</g:image_link>
+      <g:availability>in_stock</g:availability>
+      <g:condition>new</g:condition>
+      <g:price>12.50 KWD</g:price>
+      <g:brand>Matjar Kuwait</g:brand>
+      <g:identifier_exists>no</g:identifier_exists>
+      <g:shipping>
+        <g:country>KW</g:country>
+        <g:service>Standard</g:service>
+        <g:price>1.50 KWD</g:price>
+      </g:shipping>
+    </item>
+
+    <!-- عنصر 3 -->
+    <item>
+      <g:id>SKU-0003</g:id>
+      <g:title>حافظة هاتف مضادة للصدمات</g:title>
+      <g:description>حافظة حماية قوية وخفيفة متوافقة مع عدة موديلات وتدعم الشحن اللاسلكي.</g:description>
+      <g:link>https://sherow1982.github.io/Kuwait-matjar/sku-0003.html</g:link>
+      <g:image_link>https://sherow1982.github.io/Kuwait-matjar/assets/images/sku-0003.jpg</g:image_link>
+      <g:availability>in_stock</g:availability>
+      <g:condition>new</g:condition>
+      <g:price>3.90 KWD</g:price>
+      <g:brand>Matjar Kuwait</g:brand>
+      <g:identifier_exists>no</g:identifier_exists>
+      <g:shipping>
+        <g:country>KW</g:country>
+        <g:service>Standard</g:service>
+        <g:price>0.90 KWD</g:price>
+      </g:shipping>
+    </item>
+
+    <!-- كرر <item> لكل منتج مع قيم صحيحة وغير فارغة -->
+  </channel>
+</rss>

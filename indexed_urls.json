@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+fix_indexed_urls.py
+تصحيح indexed_urls.json ليتوافق مع جذر GitHub Pages الجديد:
+https://sherow1982.github.io/Kuwait-matjar/products/
+"""
+
+import json
+import pathlib
+import sys
+import re
+from urllib.parse import urlparse, urlunparse
+
+# إعدادات
+INPUT_FILE = pathlib.Path("indexed_urls.json")
+OUTPUT_FILE = pathlib.Path("indexed_urls.json")  # يمكن تغييره إلى ملف آخر إذا رغبت
+NEW_BASE = "https://sherow1982.github.io/Kuwait-matjar/products/"
+
+def normalize_and_fix(u: str) -> str | None:
+    """
+    - يقبل فقط الروابط المطلقة https إلى sherow1982.github.io
+    - يحوّل /matjar-Kuwait/products/ إلى /Kuwait-matjar/products/
+    - يبقي فقط ما يقع تحت /Kuwait-matjar/products/ وينتهي بـ .html
+    - يزيل الاستعلام والهاش
+    """
+    if not u or not isinstance(u, str):
+        return None
+    u = u.strip()
+
+    # استبدال مباشر للمسار القديم بالجديد على نفس النطاق
+    u = u.replace("https://sherow1982.github.io/matjar-Kuwait/products/",
+                  "https://sherow1982.github.io/Kuwait-matjar/products/")
+
+    try:
+        p = urlparse(u)
+        if p.scheme.lower() != "https":
+            return None
+        if p.netloc.lower() != "sherow1982.github.io":
+            return None
+
+        # توحيد المسار: إزالة الفواصل المكررة
+        path = re.sub(r"//+", "/", p.path)
+
+        # قبول فقط المسار الصحيح والنهاية بـ .html
+        if not path.startswith("/Kuwait-matjar/products/"):
+            return None
+        if not path.endswith(".html"):
+            return None
+
+        # إزالة الاستعلام والهاش
+        fixed = urlunparse(("https", "sherow1982.github.io", path, "", "", ""))
+        # تأكيد التطابق مع NEW_BASE
+        if not fixed.startswith(NEW_BASE):
+            return None
+        return fixed
+    except Exception:
+        return None
+
+def main():
+    if not INPUT_FILE.exists():
+        print(f"Missing file: {INPUT_FILE}", file=sys.stderr)
+        sys.exit(1)
+
+    try:
+        data = json.loads(INPUT_FILE.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"Invalid JSON: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    if not isinstance(data, list):
+        print("indexed_urls.json must contain a JSON array of URLs", file=sys.stderr)
+        sys.exit(1)
+
+    fixed = []
+    invalid = []
+    for raw in data:
+        nu = normalize_and_fix(str(raw))
+        if nu:
+            fixed.append(nu)
+        else:
+            invalid.append(raw)
+
+    # إزالة التكرارات وترتيب
+    unique_sorted = sorted(set(fixed))
+
+    # كتابة الملف
+    OUTPUT_FILE.write_text(json.dumps(unique_sorted, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    print(f"Loaded: {len(data)}")
+    print(f"Kept unique valid: {len(unique_sorted)}")
+    print(f"Dropped invalid: {len(invalid)}")
+
+if __name__ == "__main__":
+    main()

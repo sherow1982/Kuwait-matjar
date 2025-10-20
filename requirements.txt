@@ -1,0 +1,8 @@
+requests>=2.31
+beautifulsoup4>=4.12.3
+lxml>=4.9
+
+pandas>=2.2
+openpyxl>=3.1
+
+python-slugify>=8.0.1
