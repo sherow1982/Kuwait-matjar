@@ -11,12 +11,12 @@
 <body>
     <header class="header">
         <div class="header__inner container">
-            <a href="/" class="header__logo"><h1>المتجر الكويتي</h1></a>
+            <a href="./" class="header__logo"><h1>المتجر الكويتي</h1></a>
             <div class="header__spacer"></div>
             <nav class="main-nav">
-                <a href="/blog.html">المدونة</a>
-                <a href="/about.html">من نحن</a>
-                <a href="/shipping-policy.html">سياسة الشحن</a>
+                <a href="./blog.html" target="_blank" rel="noopener noreferrer">المدونة</a>
+                <a href="./about.html" target="_blank" rel="noopener noreferrer">من نحن</a>
+                <a href="./shipping-policy.html" target="_blank" rel="noopener noreferrer">سياسة الشحن</a>
             </nav>
         </div>
     </header>
@@ -31,9 +31,9 @@
     </main>
     <footer class="footer">
         <nav class="footer-nav container">
-            <a href="/about.html">من نحن</a>
-            <a href="/shipping-policy.html">سياسة الشحن</a>
-            <a href="/return-policy.html">الاستبدال والاسترجاع</a>
+            <a href="./about.html" target="_blank" rel="noopener noreferrer">من نحن</a>
+            <a href="./shipping-policy.html" target="_blank" rel="noopener noreferrer">سياسة الشحن</a>
+            <a href="./return-policy.html" target="_blank" rel="noopener noreferrer">الاستبدال والاسترجاع</a>
         </nav>
         <div class="container footer__bottom"><p>&copy; 2025 المتجر الكويتي</p></div>
     </footer>
@@ -43,9 +43,9 @@
         const slugify = (text) => text ? text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\u0600-\u06FFa-z0-9-]/g, '').replace(/-+/g, '-') : '';
 
         const createArticle = (p = {}) => {
-            const title = p['العنوان'] || '';
+            const title = p['العنوان'] || 'منتج غير متوفر';
             const image = p['رابط الصورة'] || '';
-            const description = p['الوصف'] || '';
+            const description = p['الوصف'] || 'لا يوجد وصف متاح لهذا المنتج.';
             const productSlug = slugify(title);
             const productPageLink = `./product.html?name=${productSlug}`;
             const price = p['السعر المخفّض'] || p['السعر'];
@@ -57,13 +57,13 @@
 
             return `
                 <article class="blog-post-summary">
-                    <a href="${productPageLink}" target="_blank" class="blog-post-thumb"><img src="${image}" alt="${title}" loading="lazy"></a>
+                    <a href="${productPageLink}" target="_blank" rel="noopener noreferrer" class="blog-post-thumb"><img src="${image}" alt="${title}" loading="lazy"></a>
                     <div class="blog-post-content">
-                        <h2><a href="${productPageLink}" target="_blank">${title}</a></h2>
+                        <h2><a href="${productPageLink}" target="_blank" rel="noopener noreferrer">${title}</a></h2>
                         <p>${articleText}</p>
                         <div class="blog-post-actions">
-                            <a href="${productPageLink}" target="_blank" class="btn">عرض التفاصيل</a>
-                            <a href="${whatsappLink}" target="_blank" class="btn btn-whatsapp">
+                            <a href="${productPageLink}" target="_blank" rel="noopener noreferrer" class="btn">عرض التفاصيل</a>
+                            <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
                                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.61 15.36 3.48 16.84L2 22L7.32 20.55C8.75 21.33 10.37 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 6.45 17.5 2 12.04 2Z"/></svg>
                                 اطلب عبر واتساب
                             </a>
@@ -84,8 +84,8 @@
                         container.innerHTML = '<p>لا توجد مقالات لعرضها حالياً.</p>';
                     }
                 } catch (e) {
-                    console.error(e);
-                    container.innerHTML = '<p>حدث خطأ أثناء تحميل المقالات.</p>';
+                    console.error("خطأ في تحميل مقالات المدونة:", e);
+                    container.innerHTML = '<p>حدث خطأ أثناء تحميل المقالات. يرجى المحاولة مرة أخرى لاحقاً.</p>';
                 }
             }
         })();
