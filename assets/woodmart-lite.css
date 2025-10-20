@@ -1,282 +1,145 @@
 /* ==========================================================================
-   Woodmart-like Lite CSS (v2 - Professional Card Style)
-   Author: Custom
-   Purpose: Mimic WoodMart visual style for static storefronts (RTL-ready)
-   Notes: Enhanced with floating card effects and improved hover states.
+   Woodmart-like Lite CSS (v3 - Professional Image Style)
+   Purpose: Professional card style based on user-provided image.
    ========================================================================== */
 
 /* Root variables */
 :root {
   --container: 1200px;
   --gutter: 1rem;
-  --space-1: .375rem;
-  --space-2: .75rem;
   --space-3: 1rem;
-  --space-4: 1.5rem;
   --space-5: 2rem;
-
-  --radius-1: 8px;
-  --radius-2: 12px;
-  --radius-product: 16px; /* New: Larger radius for product cards */
-
-  --shadow-1: 0 6px 18px rgba(0,0,0,.07);
-  --shadow-2: 0 12px 28px rgba(0,0,0,.12); /* Enhanced shadow */
-  --shadow-3: 0 20px 40px rgba(0,0,0,.15); /* New: Deeper hover shadow */
-
-  --border-1: 1px solid rgba(0,0,0,.08);
-  --border-2: 1px solid rgba(0,0,0,.12);
-
+  --radius-product: 12px;
+  --shadow-1: 0 4px 15px rgba(0,0,0,.08);
+  --border-1: 1px solid #f0f0f0;
   --bg: #ffffff;
-  --bg-muted: #f6f7f9;
-  --bg-soft: #fafafa;
-  --text: #1f1f1f;
-  --text-2: #444;
-  --muted: #6b7280;
-  --line: rgba(0,0,0,.08);
-
-  --accent: #3aa77a;          /* Primary brand color */
-  --accent-2: #245f49;        /* Darker shade */
-  --danger: #ef4444;
-  --warning: #f59e0b;
-  --success: #22c55e;
-
-  color-scheme: light;
+  --bg-soft: #f9f9f9;
+  --text: #222;
+  --text-2: #555;
+  --muted: #999;
+  --accent: #3aa77a;
+  --sale-badge-bg: #e74c3c;
 }
 
-/* Dark scheme (optional auto) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #18181b; /* Slightly lighter dark background */
-    --bg-muted: #27272a;
+    --border-1: 1px solid #333;
+    --bg: #1e1e1e;
     --bg-soft: #121212;
-    --text: #f4f4f5;
-    --text-2: #e4e4e7;
-    --muted: #a1a1aa;
-    --line: rgba(255,255,255,.1);
-
-    --border-1: 1px solid rgba(255,255,255,.1);
-    --border-2: 1px solid rgba(255,255,255,.15);
-
-    --shadow-1: 0 6px 18px rgba(0,0,0,.3);
-    --shadow-2: 0 12px 28px rgba(0,0,0,.4);
-    --shadow-3: 0 20px 40px rgba(0,0,0,.5);
+    --text: #f5f5f5;
+    --text-2: #bbb;
+    --muted: #888;
+    --shadow-1: 0 4px 15px rgba(0,0,0,.3);
   }
 }
 
 /* Base reset */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
-html[dir="rtl"] body { direction: rtl; }
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", "Noto Sans", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--text);
   background: var(--bg-soft);
   line-height: 1.6;
-  font-size: 16px;
 }
-img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
-button { font: inherit; cursor: pointer; border: none; background: none; }
-input, select, textarea { font: inherit; color: inherit; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-1); }
+img { max-width: 100%; display: block; }
 
-/* Utilities */
+/* Layout */
 .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
 .section { padding-block: var(--space-5); }
 
-/* Typography */
-h1, .h1 { font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.2; margin: 0 0 var(--space-3); font-weight: 800; }
-h2, .h2 { font-size: clamp(1.4rem, 2.5vw, 1.8rem); line-height: 1.3; margin: 0 0 var(--space-3); font-weight: 700; }
-h3, .h3 { font-size: 1.15rem; line-height: 1.4; margin: 0 0 var(--space-2); font-weight: 600; }
-
-/* Buttons */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-  padding: .65rem 1.25rem;
-  border-radius: var(--radius-1);
-  border: 1px solid transparent;
-  color: #fff;
-  background: var(--accent);
-  font-weight: 600;
-  transition: all .2s ease;
-}
-.btn:hover { 
-  transform: translateY(-2px); 
-  box-shadow: var(--shadow-2); 
-  background: var(--accent-2); 
-}
-.btn:active { transform: translateY(0); box-shadow: none; }
-.btn--sm { padding: .5rem 1rem; border-radius: 6px; font-size: .9rem; }
-
-/* Header */
+/* Header & Footer */
 .header {
-  position: sticky; inset-block-start: 0; z-index: 1000;
   background: color-mix(in srgb, var(--bg) 85%, transparent);
-  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-block-end: var(--border-1);
+  position: sticky; top: 0; z-index: 1000;
 }
-.header__inner {
-  height: 70px;
-  max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter);
-  display: flex; align-items: center; gap: var(--space-3);
-}
-.header__logo { font-weight: 800; font-size: 1.3rem; }
+.header__inner { height: 70px; display: flex; align-items: center; }
+.header__logo { font-weight: 700; font-size: 1.2rem; }
 .header__spacer { flex: 1; }
+.footer { background: var(--bg); border-block-start: var(--border-1); margin-block-start: 3rem; padding: 1.5rem 0; }
+.footer__bottom { text-align: center; color: var(--muted); font-size: .9rem; }
 
-/* Products grid */
+/* Products Grid */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.75rem; /* Increased gap */
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
 }
 
-/* === Product Card (Professional Style) === */
+/* === Product Card (New Professional Style) === */
 .product {
   background: var(--bg);
   border-radius: var(--radius-product);
+  border: var(--border-1);
   overflow: hidden;
-  position: relative;
-  /* Softer initial shadow */
-  box-shadow: 0 2px 10px rgba(0,0,0,.06);
-  /* Smooth transition for hover effects */
-  transition: transform .3s ease, box-shadow .3s ease;
+  transition: box-shadow .3s ease, transform .3s ease;
 }
 .product:hover {
-  /* Lift the card on hover */
-  transform: translateY(-8px);
-  /* Deeper shadow on hover for a 3D effect */
-  box-shadow: var(--shadow-2);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-1);
 }
 
 .product__media {
   position: relative;
-  aspect-ratio: 1 / 1;
-  overflow: hidden; /* This is crucial for the image zoom effect */
+  overflow: hidden;
+  background-color: #f5f5f5; /* Placeholder background */
 }
 .product__media img {
-  width: 100%;
-  height: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
-  transition: transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform .35s ease;
 }
 .product:hover .product__media img {
-  /* Zoom image on hover */
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
+/* Sale Badge Style */
 .product__badge {
   position: absolute;
-  inset-block-start: 1rem;
-  inset-inline-start: 1rem;
-  padding: .3rem .6rem;
-  border-radius: 6px;
-  font-size: .8rem;
-  font-weight: 700;
+  top: 12px;
+  right: 12px;
+  background-color: var(--sale-badge-bg);
   color: #fff;
-  background: var(--danger);
-  z-index: 2;
-}
-.product__badge--new { background: var(--success); }
-
-/* Hover actions button */
-.product__hover {
-  position: absolute;
-  inset-inline: 0;
-  inset-block-end: 1rem;
-  display: flex;
-  justify-content: center;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity .3s ease, transform .3s ease;
-  z-index: 2;
-}
-.product:hover .product__hover {
-  opacity: 1;
-  transform: translateY(0);
-}
-.product__hover .btn {
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--accent-2);
-  box-shadow: var(--shadow-1);
+  font-size: 0.8rem;
   font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  z-index: 2;
 }
-.product__hover .btn:hover {
-  background: #fff;
-  color: #000;
-}
-
 
 .product__body {
-  padding: 1.1rem;
-  text-align: start; /* Ensures RTL text alignment */
-  background: var(--bg);
-  position: relative;
-  z-index: 1;
+  padding: 1rem;
+  text-align: center; /* Center align title and price */
 }
 
 .product__title {
-  margin: 0 0 .5rem;
+  margin: 0 0 0.5rem;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.4;
-  color: var(--text);
-}
-.product__title a {
-  text-decoration: none;
-  transition: color .2s;
-}
-.product__title a:hover {
-  color: var(--accent);
+  color: var(--text-2);
 }
 
+/* Price styling */
 .price {
   display: flex;
+  justify-content: center;
   align-items: baseline;
-  gap: .5rem;
-  font-weight: 700;
-  color: var(--accent); /* Sale price is accent color */
+  gap: 0.6rem;
   font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
 }
-.price s { /* Old price style */
+.price s { /* Old price */
+  font-size: 0.9rem;
   color: var(--muted);
   font-weight: 500;
-  font-size: 0.9rem;
 }
-
-/* Skeleton Loader */
-.skeleton { 
-  background: color-mix(in srgb, var(--bg-muted) 50%, transparent);
-  background: linear-gradient(90deg, 
-    var(--bg-muted), 
-    color-mix(in srgb, var(--bg-muted), #fff 10%), 
-    var(--bg-muted)
-  ); 
-  background-size: 200% 100%; 
-  animation: sk 1.5s infinite linear; 
-}
-@keyframes sk { to { background-position: 200% 0; } }
-
-
-/* Footer */
-.footer {
-  background: var(--bg);
-  border-block-start: var(--border-1);
-  margin-block-start: 3rem;
-  padding: 1.5rem 0;
-}
-.footer__bottom {
-  text-align: center;
-  color: var(--muted);
-  font-size: .95rem;
-}
-
-/* RTL logical tweaks */
+/* RTL adjustments */
 html[dir="rtl"] .product__badge { 
-  inset-inline-start: auto; 
-  inset-inline-end: 1rem; 
-}
-html[dir="rtl"] .product__body {
-  text-align: start;
+  right: auto; 
+  left: 12px; 
 }
