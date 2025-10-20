@@ -7,7 +7,7 @@
     <meta name="description" content="منتجات مميزة يتم تحديثها تلقائيًا من المتجر الكويتي.">
 
     <!-- SEO Enhancements -->
-    <link rel="canonical" href="https://sherow1982.github.io/matjar-Kuwait/">
+    <link rel="canonical" href="https://sherow1982.github.io/Kuwait-matjar/">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="theme-color" content="#3aa77a">
 
@@ -25,7 +25,7 @@
     {
       "@context":"https://schema.org",
       "@type":"WebSite",
-      "url":"https://sherow1982.github.io/matjar-Kuwait/",
+      "url":"https://sherow1982.github.io/Kuwait-matjar/",
       "name":"المتجر الكويتي",
       "inLanguage":"ar-KW"
     }
@@ -66,41 +66,39 @@
     </noscript>
 
     <script type="module">
-      // 1. Data source is updated to point to your new JSON file
       const DATA_URL = 'https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/data/products-template.json?raw=1';
       const container = document.getElementById('products-container');
 
-      // Helper to safely escape HTML
       const escapeHTML = (str) => String(str ?? '')
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
-      // Helper to parse price string like "23.00 KWD" into a number
       const parsePrice = (priceStr) => {
         if (!priceStr) return null;
         const num = parseFloat(String(priceStr).replace(/[^0-9.]/g, ''));
         return isNaN(num) ? null : num;
       };
 
-      // Helper to format number into KWD currency
       const formatKD = (val) => {
         if (typeof val !== 'number') return '';
         return new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val);
       };
 
-      // 2. The product card function is updated to match the new JSON structure and CSS classes
       const createProductCard = (p = {}) => {
         const title = escapeHTML(p['العنوان'] || 'منتج غير متوفر');
         const image = escapeHTML(p['رابط الصورة'] || '');
-        const link = escapeHTML(p['الرابط'] || '#');
+        
+        // --- التغيير الرئيسي هنا ---
+        // تم تعيين الرابط بشكل ثابت ليؤدي إلى الصفحة الرئيسية لموقعك
+        const link = 'https://sherow1982.github.io/Kuwait-matjar/'; 
         
         const salePriceNum = parsePrice(p['السعر المخفّض']);
         const regularPriceNum = parsePrice(p['السعر']);
-
         const currentPrice = formatKD(salePriceNum ?? regularPriceNum);
         const oldPrice = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
         const badge = p['الحالة'] === 'جديد' ? `<div class="product__badge product__badge--new">جديد</div>` : '';
 
+        // تم إضافة target="_blank" لكل الروابط
         return `
           <div class="product">
             <div class="product__media">
@@ -135,7 +133,6 @@
         container.setAttribute('aria-busy', 'false');
       };
 
-      // Fetch and render the products
       (async () => {
         try {
           const res = await fetch(DATA_URL, { cache: 'no-store' });
