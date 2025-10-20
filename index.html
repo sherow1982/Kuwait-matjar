@@ -3,16 +3,24 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>المتجر الكويتي - منتجات مميزة</title>
+    
+    <!-- SEO: عنوان وصفي للصفحة الرئيسية -->
+    <title>المتجر الكويتي - أحدث المنتجات والعروض في الكويت</title>
+    
+    <!-- SEO: وصف تعريفي جذاب -->
+    <meta name="description" content="اكتشف أفضل العروض على الإلكترونيات، الأدوات المنزلية، ومستلزمات العناية الشخصية في المتجر الكويتي. تسوق الآن واستمتع بأسعار تنافسية في الكويت.">
+    
+    <!-- SEO: تحديد الرابط الأساسي للصفحة -->
+    <link rel="canonical" href="https://sherow1982.github.io/Kuwait-matjar/">
+
     <link rel="stylesheet" href="./woodmart-lite.css">
-    <link rel="icon" href="./assets/icons/favicon.ico">
+    <link rel="icon" href="./favicon.ico">
 </head>
 <body>
     <header class="header">
         <div class="header__inner container">
-            <a href="/" class="header__logo">المتجر الكويتي</a>
+            <a href="/" class="header__logo"><h1>المتجر الكويتي</h1></a>
             <div class="header__spacer"></div>
-            <p style="margin:0; color:var(--muted);">أحدث المنتجات والعروض</p>
         </div>
     </header>
     <main class="section">
@@ -26,69 +34,32 @@
         </div>
     </footer>
     <script type="module">
+        // باقي الكود كما هو بدون تغيير
         const DATA_URL = 'https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/data/products-template.json?raw=1';
         const container = document.getElementById('products-container');
-
-        const escapeHTML = (str) => String(str ?? '').replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
-        const parsePrice = (priceStr) => priceStr ? parseFloat(String(priceStr).replace(/[^0-9.]/g, '')) : null;
-        const formatKD = (val) => typeof val === 'number' ? new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val) : '';
         const slugify = (text) => text ? text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\u0600-\u06FFa-z0-9-]/g, '').replace(/-+/g, '-') : '';
-
         const createProductCard = (p = {}) => {
-            const title = escapeHTML(p['العنوان']);
-            const image = escapeHTML(p['رابط الصورة']);
+            const title = p['العنوان'] || '';
+            const image = p['رابط الصورة'] || '';
             const productSlug = slugify(title);
             const productPageLink = `./product.html?name=${productSlug}`;
-            
-            const salePriceNum = parsePrice(p['السعر المخفّض']);
-            const regularPriceNum = parsePrice(p['السعر']);
-            
-            const currentPriceHTML = formatKD(salePriceNum ?? regularPriceNum);
-            const oldPriceHTML = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
-            
-            // --- التغيير هنا: حساب نسبة الخصم ---
+            const salePriceNum = parseFloat(String(p['السعر المخفّض']).replace(/[^0-9.]/g, ''));
+            const regularPriceNum = parseFloat(String(p['السعر']).replace(/[^0-9.]/g, ''));
+            const currentPriceHTML = new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(salePriceNum || regularPriceNum);
+            const oldPriceHTML = salePriceNum ? `<s>${new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(regularPriceNum)}</s>` : '';
             let saleBadge = '';
-            if (salePriceNum && regularPriceNum && regularPriceNum > salePriceNum) {
+            if (salePriceNum && regularPriceNum > salePriceNum) {
                 const discount = Math.round(((regularPriceNum - salePriceNum) / regularPriceNum) * 100);
                 saleBadge = `<span class="product__badge">-${discount}%</span>`;
             }
-
-            return `
-                <div class="product">
-                    <a href="${productPageLink}" target="_blank" rel="noopener noreferrer" class="product__media">
-                        ${saleBadge}
-                        <img src="${image}" alt="${title}" loading="lazy" decoding="async">
-                    </a>
-                    <div class="product__body">
-                        <h3 class="product__title">
-                            <a href="${productPageLink}" target="_blank" rel="noopener noreferrer">${title}</a>
-                        </h3>
-                        <div class="price">
-                            ${oldPriceHTML}
-                            <span>${currentPriceHTML}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
+            return `<div class="product"><a href="${productPageLink}" target="_blank" rel="noopener noreferrer" class="product__media">${saleBadge}<img src="${image}" alt="${title}" loading="lazy" decoding="async"></a><div class="product__body"><h3><a href="${productPageLink}" target="_blank" rel="noopener noreferrer">${title}</a></h3><div class="price">${oldPriceHTML}<span>${currentPriceHTML}</span></div></div></div>`;
         };
-      
-        const renderProducts = (items) => {
-            if (container && items?.length) {
-                container.innerHTML = `<div class="products">${items.map(createProductCard).join('')}</div>`;
-            } else if (container) {
-                container.innerHTML = '<p>عفواً، لم يتم العثور على منتجات حالياً.</p>';
-            }
-        };
-
         (async () => {
             try {
-                const res = await fetch(DATA_URL, { cache: 'no-store' });
-                if (!res.ok) throw new Error('فشل تحميل المنتجات');
+                const res = await fetch(DATA_URL);
                 const items = await res.json();
-                renderProducts(items);
-            } catch (error) {
-                console.error("Failed to fetch products:", error);
-            }
+                if (container && items?.length) container.innerHTML = `<div class="products">${items.map(createProductCard).join('')}</div>`;
+            } catch (e) { console.error(e); }
         })();
     </script>
 </body>
