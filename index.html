@@ -7,8 +7,11 @@
     <meta name="description" content="منتجات مميزة يتم تحديثها تلقائيًا من المتجر الكويتي.">
     <link rel="canonical" href="https://sherow1982.github.io/Kuwait-matjar/">
     <meta name="theme-color" content="#3aa77a">
-    <link rel="preload" href="https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/assets/woodmart-lite.css?raw=1" as="style" fetchpriority="high">
-    <link rel="stylesheet" href="https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/assets/woodmart-lite.css?raw=1">
+    
+    <!-- === التغيير هنا: تم تحديث المسار ليقرأ من الجذر مباشرة === -->
+    <link rel="preload" href="./woodmart-lite.css" as="style" fetchpriority="high">
+    <link rel="stylesheet" href="./woodmart-lite.css">
+    
     <link rel="icon" href="./assets/icons/favicon.ico">
 </head>
 <body>
@@ -21,7 +24,7 @@
     </header>
     <main class="section">
         <div id="products-container" class="container" aria-live="polite" aria-busy="true">
-            <!-- Skeleton loader can be added here if needed -->
+            <!-- Products will be rendered here by JavaScript -->
         </div>
     </main>
     <footer class="footer">
@@ -38,24 +41,17 @@
         const formatKD = (val) => typeof val === 'number' ? new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val) : '';
         const slugify = (text) => text ? text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\u0600-\u06FFa-z0-9-]/g, '').replace(/-+/g, '-') : '';
 
-        /**
-         * --- الكود المحدث لإنشاء بطاقة المنتج ---
-         */
         const createProductCard = (p = {}) => {
             const title = escapeHTML(p['العنوان']);
             const image = escapeHTML(p['رابط الصورة']);
-            
             const productSlug = slugify(title);
             const productPageLink = `./product.html?name=${productSlug}`;
             
             const salePriceNum = parsePrice(p['السعر المخفّض']);
             const regularPriceNum = parsePrice(p['السعر']);
             
-            // تهيئة السعر القديم والجديد
             const currentPriceHTML = formatKD(salePriceNum ?? regularPriceNum);
             const oldPriceHTML = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
-
-            // إضافة شارة "تخفيضات" فقط إذا كان هناك سعر مخفض
             const saleBadge = salePriceNum ? '<span class="product__badge">تخفيضات</span>' : '';
 
             return `
