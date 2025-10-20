@@ -88,11 +88,14 @@
             const originalLink = product['الرابط'];
             
             const salePriceNum = parsePrice(product['السعر المخفّض']);
-            const regularPriceNum = parsePrice(p['السعر']);
+            
+            // --- هذا هو السطر الذي تم تصحيحه ---
+            // تم تغيير 'p' إلى 'product'
+            const regularPriceNum = parsePrice(product['السعر']); 
+            
             const currentPrice = formatKD(salePriceNum ?? regularPriceNum);
             const oldPrice = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
 
-            // --- التغيير هنا: إنشاء رسالة ورابط الواتساب ---
             const whatsappMessage = encodeURIComponent(`مرحباً\nأريد شراء: ${title} | ${currentPrice}`);
             const whatsappLink = `https://wa.me/201110760081?text=${whatsappMessage}`;
 
@@ -105,8 +108,6 @@
                         <h1 class="h1">${title}</h1>
                         <div class="price">${currentPrice} ${oldPrice}</div>
                         <p class="product-description">${description}</p>
-                        
-                        <!-- مجموعة الأزرار الجديدة -->
                         <div class="btn-group">
                             <a href="${originalLink}" target="_blank" rel="noopener noreferrer" class="btn btn-buy">
                                 اشترِ الآن من المتجر الأصلي
