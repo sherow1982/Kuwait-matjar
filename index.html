@@ -1,37 +1,17 @@
 <!doctype html>
 <html lang="ar-KW" dir="rtl">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>المتجر الكويتي - منتجات مميزة</title>
     <meta name="description" content="منتجات مميزة يتم تحديثها تلقائيًا من المتجر الكويتي.">
-
-    <!-- SEO Enhancements -->
     <link rel="canonical" href="https://sherow1982.github.io/Kuwait-matjar/">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="theme-color" content="#3aa77a">
-
-    <!-- Styles: Woodmart Lite -->
     <link rel="preload" href="https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/assets/woodmart-lite.css?raw=1" as="style" fetchpriority="high">
     <link rel="stylesheet" href="https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/assets/woodmart-lite.css?raw=1">
-
-    <!-- Icons -->
     <link rel="icon" href="./assets/icons/favicon.ico">
-    <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
-    <link rel="manifest" href="./site.webmanifest">
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context":"https://schema.org",
-      "@type":"WebSite",
-      "url":"https://sherow1982.github.io/Kuwait-matjar/",
-      "name":"المتجر الكويتي",
-      "inLanguage":"ar-KW"
-    }
-    </script>
-  </head>
-  <body>
+</head>
+<body>
     <header class="header">
         <div class="header__inner container">
             <a href="/" class="header__logo">المتجر الكويتي</a>
@@ -39,11 +19,8 @@
             <p style="margin:0; color:var(--muted);">أحدث المنتجات والعروض</p>
         </div>
     </header>
-
-    <!-- Products Grid: Populated by JavaScript -->
     <main class="section">
         <div id="products-container" class="container" aria-live="polite" aria-busy="true">
-            <!-- Fallback content for no-JS -->
             <div class="products">
                 <div class="product skeleton" style="aspect-ratio: 1/1.2;"></div>
                 <div class="product skeleton" style="aspect-ratio: 1/1.2;"></div>
@@ -52,101 +29,87 @@
             </div>
         </div>
     </main>
-
     <footer class="footer">
         <div class="container footer__bottom">
             <p>© 2025 المتجر الكويتي - جميع الحقوق محفوظة</p>
         </div>
     </footer>
-
-    <noscript>
-        <div class="container">
-            <p>يرجى تفعيل JavaScript لعرض المنتجات بشكل صحيح.</p>
-        </div>
-    </noscript>
-
     <script type="module">
-      const DATA_URL = 'https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/data/products-template.json?raw=1';
-      const container = document.getElementById('products-container');
+        const DATA_URL = 'https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/data/products-template.json?raw=1';
+        const container = document.getElementById('products-container');
 
-      const escapeHTML = (str) => String(str ?? '')
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        const escapeHTML = (str) => String(str ?? '').replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
+        const parsePrice = (priceStr) => priceStr ? parseFloat(String(priceStr).replace(/[^0-9.]/g, '')) : null;
+        const formatKD = (val) => typeof val === 'number' ? new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val) : '';
 
-      const parsePrice = (priceStr) => {
-        if (!priceStr) return null;
-        const num = parseFloat(String(priceStr).replace(/[^0-9.]/g, ''));
-        return isNaN(num) ? null : num;
-      };
+        /**
+         * --- التغيير الأول: إضافة دالة لإنشاء رابط نصي (Slug) ---
+         * هذه الدالة تحول العنوان إلى رابط صالح للاستخدام في الـ URL.
+         */
+        const slugify = (text) => {
+            if (!text) return '';
+            return text.toString().toLowerCase().trim()
+                .replace(/\s+/g, '-') // استبدال المسافات بـ -
+                .replace(/[^\u0600-\u06FFa-z0-9-]/g, '') // إزالة الأحرف غير المرغوبة
+                .replace(/-+/g, '-'); // إزالة الشرطات المتكررة
+        };
 
-      const formatKD = (val) => {
-        if (typeof val !== 'number') return '';
-        return new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val);
-      };
+        const createProductCard = (p = {}) => {
+            const title = escapeHTML(p['العنوان']);
+            const image = escapeHTML(p['رابط الصورة']);
+            const originalLink = escapeHTML(p['الرابط']);
+            
+            // --- التغيير الثاني: إنشاء الرابط الجديد باستخدام الدالة slugify ---
+            const productSlug = slugify(title);
+            const productPageLink = `./product.html?name=${productSlug}`;
+            
+            const salePriceNum = parsePrice(p['السعر المخفّض']);
+            const regularPriceNum = parsePrice(p['السعر']);
+            const currentPrice = formatKD(salePriceNum ?? regularPriceNum);
+            const oldPrice = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
 
-      const createProductCard = (p = {}) => {
-        const title = escapeHTML(p['العنوان'] || 'منتج غير متوفر');
-        const image = escapeHTML(p['رابط الصورة'] || '');
-        
-        // --- التغيير الرئيسي هنا ---
-        // تم تعيين الرابط بشكل ثابت ليؤدي إلى الصفحة الرئيسية لموقعك
-        const link = 'https://sherow1982.github.io/Kuwait-matjar/'; 
-        
-        const salePriceNum = parsePrice(p['السعر المخفّض']);
-        const regularPriceNum = parsePrice(p['السعر']);
-        const currentPrice = formatKD(salePriceNum ?? regularPriceNum);
-        const oldPrice = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
-        const badge = p['الحالة'] === 'جديد' ? `<div class="product__badge product__badge--new">جديد</div>` : '';
-
-        // تم إضافة target="_blank" لكل الروابط
-        return `
-          <div class="product">
-            <div class="product__media">
-              <a href="${link}" target="_blank" rel="noopener noreferrer">
-                <img src="${image}" alt="${title}" loading="lazy" decoding="async">
-              </a>
-              ${badge}
-              <div class="product__hover">
-                <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn btn--sm">شراء الآن</a>
-              </div>
-            </div>
-            <div class="product__body">
-              <h3 class="product__title">
-                <a href="${link}" target="_blank" rel="noopener noreferrer">${title}</a>
-              </h3>
-              <div class="price">
-                ${currentPrice} ${oldPrice}
-              </div>
-            </div>
-          </div>
-        `;
-      };
-
-      const renderProducts = (items) => {
-        if (!container) return;
-        if (Array.isArray(items) && items.length) {
-          const productsHTML = items.map(createProductCard).join('');
-          container.innerHTML = `<div class="products">${productsHTML}</div>`;
-        } else {
-          container.innerHTML = '<p>عفواً، لم يتم العثور على منتجات حالياً.</p>';
-        }
-        container.setAttribute('aria-busy', 'false');
-      };
-
-      (async () => {
-        try {
-          const res = await fetch(DATA_URL, { cache: 'no-store' });
-          if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-          const items = await res.json();
-          renderProducts(items);
-        } catch (error) {
-          console.error("Failed to fetch products:", error);
-          if (container) {
-            container.innerHTML = '<p>حدث خطأ أثناء تحميل المنتجات. يرجى المحاولة مرة أخرى لاحقاً.</p>';
+            return `
+                <div class="product">
+                    <div class="product__media">
+                        <a href="${productPageLink}">
+                            <img src="${image}" alt="${title}" loading="lazy" decoding="async">
+                        </a>
+                        <div class="product__hover">
+                            <a href="${originalLink}" target="_blank" rel="noopener noreferrer" class="btn btn--sm">شراء الآن</a>
+                        </div>
+                    </div>
+                    <div class="product__body">
+                        <h3 class="product__title">
+                            <a href="${productPageLink}">${title}</a>
+                        </h3>
+                        <div class="price">
+                            ${currentPrice} ${oldPrice}
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+      
+        const renderProducts = (items) => {
+            if (!container) return;
+            if (Array.isArray(items) && items.length) {
+                container.innerHTML = `<div class="products">${items.map(createProductCard).join('')}</div>`;
+            } else {
+                container.innerHTML = '<p>عفواً، لم يتم العثور على منتجات حالياً.</p>';
+            }
             container.setAttribute('aria-busy', 'false');
-          }
-        }
-      })();
+        };
+
+        (async () => {
+            try {
+                const res = await fetch(DATA_URL, { cache: 'no-store' });
+                if (!res.ok) throw new Error('فشل تحميل المنتجات');
+                const items = await res.json();
+                renderProducts(items);
+            } catch (error) {
+                console.error("Failed to fetch products:", error);
+            }
+        })();
     </script>
-  </body>
+</body>
 </html>
