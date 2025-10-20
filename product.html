@@ -4,50 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تفاصيل المنتج</title>
+    <!-- SEO: سيتم تحديث الوصف ديناميكيًا -->
+    <meta name="description" content="">
     <link rel="stylesheet" href="./woodmart-lite.css">
+    <link rel="icon" href="./favicon.ico">
     <style>
-        /* === تصميم جديد للأزرار ومجموعتها === */
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem; /* مسافة بين الأزرار */
-            margin-top: 2rem;
-        }
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            width: 100%;
-            padding: 0.9rem;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            text-align: center;
-            transition: all .2s ease;
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
-        .btn.btn-buy {
-            background-color: var(--accent, #3aa77a);
-            color: white;
-        }
-        .btn.btn-whatsapp {
-            background-color: #25D366;
-            color: white;
-        }
-        .btn.btn-whatsapp:hover {
-            background-color: #128C7E;
-        }
-        .btn-whatsapp svg {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-        }
+        .btn-group { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+        .btn { display: flex; align-items: center; justify-content: center; gap: 0.75rem; width: 100%; padding: 0.9rem; font-size: 1.1rem; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; text-align: center; transition: all .2s ease; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .btn.btn-buy { background-color: var(--accent, #3aa77a); color: white; }
+        .btn.btn-whatsapp { background-color: #25D366; color: white; }
+        .btn-whatsapp:hover { background-color: #128C7E; }
+        .btn-whatsapp svg { width: 24px; height: 24px; fill: currentColor; }
     </style>
 </head>
 <body>
@@ -68,58 +36,48 @@
     </footer>
     <script type="module">
         const content = document.getElementById('product-content');
-
-        const escapeHTML = (str) => String(str ?? '').replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
-        const parsePrice = (priceStr) => priceStr ? parseFloat(String(priceStr).replace(/[^0-9.]/g, '')) : null;
-        const formatKD = (val) => typeof val === 'number' ? new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val) : '';
         const slugify = (text) => text ? text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\u0600-\u06FFa-z0-9-]/g, '').replace(/-+/g, '-') : '';
 
         const renderProductDetails = (product) => {
-            if (!product) {
-                content.innerHTML = '<p>عفواً، هذا المنتج غير موجود.</p>';
-                return;
-            }
+            if (!product) { content.innerHTML = '<p>عفواً، هذا المنتج غير موجود.</p>'; return; }
 
+            // --- SEO: تحديث بيانات الصفحة ديناميكيًا ---
             document.title = product['العنوان'];
+            document.querySelector('meta[name="description"]').setAttribute("content", product['الوصف'].substring(0, 160));
+            const canonicalLink = document.createElement('link');
+            canonicalLink.rel = 'canonical';
+            canonicalLink.href = `https://sherow1982.github.io/Kuwait-matjar/product.html?name=${slugify(product['العنوان'])}`;
+            document.head.appendChild(canonicalLink);
             
-            const title = escapeHTML(product['العنوان']);
-            const image = escapeHTML(product['رابط الصورة']);
-            const description = escapeHTML(product['الوصف']).replace(/\n/g, '<br>');
+            const title = product['العنوان'];
+            const image = product['رابط الصورة'];
+            const description = product['الوصف'].replace(/\n/g, '<br>');
             const originalLink = product['الرابط'];
             
-            const salePriceNum = parsePrice(product['السعر المخفّض']);
-            
-            // --- هذا هو السطر الذي تم تصحيحه ---
-            // تم تغيير 'p' إلى 'product'
-            const regularPriceNum = parsePrice(product['السعر']); 
-            
-            const currentPrice = formatKD(salePriceNum ?? regularPriceNum);
-            const oldPrice = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
+            const salePriceNum = parseFloat(String(product['السعر المخفّض']).replace(/[^0-9.]/g, ''));
+            const regularPriceNum = parseFloat(String(product['السعر']).replace(/[^0-9.]/g, ''));
+            const currentPrice = new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(salePriceNum || regularPriceNum);
+            const oldPrice = salePriceNum ? `<s>${new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(regularPriceNum)}</s>` : '';
 
             const whatsappMessage = encodeURIComponent(`مرحباً\nأريد شراء: ${title} | ${currentPrice}`);
             const whatsappLink = `https://wa.me/201110760081?text=${whatsappMessage}`;
 
-            content.innerHTML = `
-                <div class="product-details">
-                    <div class="product-gallery">
-                        <img src="${image}" alt="${title}">
-                    </div>
-                    <div class="product-info">
-                        <h1 class="h1">${title}</h1>
-                        <div class="price">${currentPrice} ${oldPrice}</div>
-                        <p class="product-description">${description}</p>
-                        <div class="btn-group">
-                            <a href="${originalLink}" target="_blank" rel="noopener noreferrer" class="btn btn-buy">
-                                اشترِ الآن من المتجر الأصلي
-                            </a>
-                            <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
-                                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.61 15.36 3.48 16.84L2 22L7.32 20.55C8.75 21.33 10.37 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 6.45 17.5 2 12.04 2M16.56 15.82C16.33 16.09 15.39 16.6 15.12 16.65C14.86 16.71 14.49 16.76 14.08 16.6C13.67 16.45 12.87 16.18 11.94 15.32C10.79 14.28 10.11 13.04 9.92 12.72C9.73 12.4 9.6 12.21 9.79 11.97C9.98 11.73 10.17 11.51 10.36 11.32C10.53 11.16 10.63 11.02 10.72 10.84C10.82 10.66 10.77 10.46 10.68 10.28C10.59 10.1 10.02 8.64 9.77 8.04C9.52 7.44 9.27 7.5 9.1 7.49H8.78C8.51 7.49 8.16 7.55 7.89 7.82C7.62 8.09 7.05 8.6 7.05 9.76C7.05 10.92 7.92 12.03 8.07 12.21C8.21 12.39 9.76 14.92 12.26 15.93C14.33 16.76 14.77 16.63 15.19 16.58C15.61 16.52 16.36 16.09 16.56 15.82Z"/></svg>
-                                اطلب عبر واتساب
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `;
+            // --- SEO: إضافة البيانات المنظمة للمنتج ---
+            const schema = {
+              "@context": "https://schema.org/", "@type": "Product", "name": title, "image": image,
+              "description": product['الوصف'], "sku": product['المعرّف'],
+              "offers": {
+                "@type": "Offer", "url": originalLink, "priceCurrency": "KWD",
+                "price": (salePriceNum || regularPriceNum).toFixed(2),
+                "availability": "https://schema.org/InStock", "priceValidUntil": "2026-12-31"
+              }
+            };
+            const schemaScript = document.createElement('script');
+            schemaScript.type = 'application/ld+json';
+            schemaScript.textContent = JSON.stringify(schema);
+            document.head.appendChild(schemaScript);
+
+            content.innerHTML = `<div class="product-details"><div class="product-gallery"><img src="${image}" alt="${title}"></div><div class="product-info"><h1>${title}</h1><div class="price">${currentPrice} ${oldPrice}</div><p class="product-description">${description}</p><div class="btn-group"><a href="${originalLink}" target="_blank" rel="noopener noreferrer" class="btn btn-buy">اشترِ الآن من المتجر الأصلي</a><a href="${whatsappLink}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp"><svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.61 15.36 3.48 16.84L2 22L7.32 20.55C8.75 21.33 10.37 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 6.45 17.5 2 12.04 2M16.56 15.82C16.33 16.09 15.39 16.6 15.12 16.65C14.86 16.71 14.49 16.76 14.08 16.6C13.67 16.45 12.87 16.18 11.94 15.32C10.79 14.28 10.11 13.04 9.92 12.72C9.73 12.4 9.6 12.21 9.79 11.97C9.98 11.73 10.17 11.51 10.36 11.32C10.53 11.16 10.63 11.02 10.72 10.84C10.82 10.66 10.77 10.46 10.68 10.28C10.59 10.1 10.02 8.64 9.77 8.04C9.52 7.44 9.27 7.5 9.1 7.49H8.78C8.51 7.49 8.16 7.55 7.89 7.82C7.62 8.09 7.05 8.6 7.05 9.76C7.05 10.92 7.92 12.03 8.07 12.21C8.21 12.39 9.76 14.92 12.26 15.93C14.33 16.76 14.77 16.63 15.19 16.58C15.61 16.52 16.36 16.09 16.56 15.82Z"/></svg>اطلب عبر واتساب</a></div></div></div>`;
         };
 
         (async () => {
@@ -127,18 +85,12 @@
                 const params = new URLSearchParams(window.location.search);
                 const productSlug = params.get('name');
                 if (!productSlug) throw new Error('رابط المنتج غير صحيح.');
-
-                const res = await fetch('https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/data/products-template.json?raw=1', { cache: 'no-store' });
-                if (!res.ok) throw new Error('فشل تحميل بيانات المنتجات');
-                
+                const res = await fetch('https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/data/products-template.json?raw=1');
+                if (!res.ok) throw new Error('فشل تحميل المنتجات');
                 const allProducts = await res.json();
                 const product = allProducts.find(p => slugify(p['العنوان']) === productSlug);
                 renderProductDetails(product);
-
-            } catch (error) {
-                console.error(error);
-                content.innerHTML = `<p>حدث خطأ: ${error.message}</p>`;
-            }
+            } catch (error) { console.error(error); }
         })();
     </script>
 </body>
