@@ -1,6 +1,6 @@
 /* ==========================================================================
-   Woodmart-like Lite CSS (v4 - Responsive Grid)
-   Purpose: Professional card style with responsive grid for all devices.
+   Woodmart-like Lite CSS (v5 - Responsive Sale Badge)
+   Purpose: Professional card style with responsive grid and visible sale badge.
    ========================================================================== */
 
 /* Root variables */
@@ -46,113 +46,69 @@ img { max-width: 100%; display: block; }
 .section { padding-block: 2rem; }
 
 /* Header & Footer */
-.header { background: var(--bg); border-block-end: var(--border-1); position: sticky; top: 0; z-index: 1000; }
+.header, .footer { background: var(--bg); border-block: var(--border-1) solid; }
+.header { position: sticky; top: 0; z-index: 1000; }
 .header__inner { height: 70px; display: flex; align-items: center; }
 .header__logo { font-weight: 700; font-size: 1.2rem; }
 .header__spacer { flex: 1; }
-.footer { background: var(--bg); border-block-start: var(--border-1); margin-top: 3rem; padding: 1.5rem 0; }
+.footer { margin-top: 3rem; padding: 1.5rem 0; }
 .footer__bottom { text-align: center; color: var(--muted); font-size: .9rem; }
 
-/* === Products Grid (Responsive) === */
+/* Products Grid */
 .products {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(2, 1fr);
 }
+@media (min-width: 768px) { .products { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; } }
+@media (min-width: 992px) { .products { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; } }
 
-@media (min-width: 768px) {
-  .products {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-  }
-}
-
-@media (min-width: 992px) {
-  .products {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-  }
-}
-
-/* === Product Card (Professional Style) === */
+/* Product Card */
 .product {
   background: var(--bg);
   border-radius: var(--radius-product);
   border: var(--border-1);
   overflow: hidden;
-  transition: box-shadow .3s ease, transform .3s ease;
+  transition: all .3s ease;
 }
-.product:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-1);
-}
+.product:hover { transform: translateY(-5px); box-shadow: var(--shadow-1); }
+.product__media { position: relative; overflow: hidden; }
+.product__media img { aspect-ratio: 1 / 1; object-fit: cover; transition: transform .35s ease; }
+.product:hover .product__media img { transform: scale(1.05); }
 
-.product__media {
-  position: relative;
-  overflow: hidden;
-  background-color: #f5f5f5;
-}
-.product__media img {
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  transition: transform .35s ease;
-}
-.product:hover .product__media img {
-  transform: scale(1.05);
-}
-
+/* === Sale Badge (Visible on all devices) === */
 .product__badge {
   position: absolute;
   top: 10px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  z-index: 2;
   background-color: var(--sale-badge-bg);
   color: #fff;
-}
-
-.product__body {
-  padding: 0.8rem;
-  text-align: center;
-}
-
-.product__title {
-  margin: 0 0 0.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--text-2);
-}
-
-.price {
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-  gap: 0.5rem;
-  font-size: 1.05rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  color: var(--text);
+  padding: 5px 10px;
+  border-radius: 20px;
+  z-index: 2;
+  /* التأكيد على ظهورها دائمًا */
+  display: inline-block;
 }
-.price s {
-  font-size: 0.85rem;
-  color: var(--muted);
-  font-weight: 500;
-}
+html[dir="rtl"] .product__badge { left: 10px; right: auto; }
 
-/* RTL adjustments */
-html[dir="rtl"] .product__badge { 
-  left: 10px; 
-  right: auto;
-}
+.product__body { padding: 0.8rem; text-align: center; }
+.product__title { margin: 0 0 0.5rem; font-size: 0.95rem; font-weight: 600; line-height: 1.4; color: var(--text-2); }
+.price { display: flex; justify-content: center; align-items: baseline; gap: 0.5rem; font-size: 1.05rem; font-weight: 700; color: var(--text); }
+.price s { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
 
 /* Product Details Page Styles */
 .product-details { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; align-items: start; }
 .product-gallery img { border-radius: var(--radius-product); box-shadow: var(--shadow-1); }
 .product-info .price { font-size: 1.5rem; margin-block: 1rem; justify-content: flex-start; }
 .product-description { margin-top: 1.5rem; line-height: 1.7; color: var(--text-2); white-space: pre-wrap; }
-.buy-button { margin-top: 2rem; padding: 1rem 2rem; font-size: 1.1rem; width: 100%; }
+.btn-group { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 0.75rem; width: 100%; padding: 0.9rem; font-size: 1.1rem; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; text-align: center; transition: all .2s ease; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+.btn.btn-buy { background-color: var(--accent, #3aa77a); color: white; }
+.btn.btn-whatsapp { background-color: #25D366; color: white; }
+.btn.btn-whatsapp:hover { background-color: #128C7E; }
+.btn-whatsapp svg { width: 24px; height: 24px; fill: currentColor; }
 @media (max-width: 768px) { 
   .product-details { grid-template-columns: 1fr; }
   .product-info .price { justify-content: center; }
