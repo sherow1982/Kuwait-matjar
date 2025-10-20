@@ -4,14 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>المتجر الكويتي - منتجات مميزة</title>
-    <meta name="description" content="منتجات مميزة يتم تحديثها تلقائيًا من المتجر الكويتي.">
-    <link rel="canonical" href="https://sherow1982.github.io/Kuwait-matjar/">
-    <meta name="theme-color" content="#3aa77a">
-    
-    <!-- === التغيير هنا: تم تحديث المسار ليقرأ من الجذر مباشرة === -->
-    <link rel="preload" href="./woodmart-lite.css" as="style" fetchpriority="high">
     <link rel="stylesheet" href="./woodmart-lite.css">
-    
     <link rel="icon" href="./assets/icons/favicon.ico">
 </head>
 <body>
@@ -23,8 +16,8 @@
         </div>
     </header>
     <main class="section">
-        <div id="products-container" class="container" aria-live="polite" aria-busy="true">
-            <!-- Products will be rendered here by JavaScript -->
+        <div id="products-container" class="container">
+            <!-- المنتجات ستُعرض هنا -->
         </div>
     </main>
     <footer class="footer">
@@ -45,24 +38,25 @@
             const title = escapeHTML(p['العنوان']);
             const image = escapeHTML(p['رابط الصورة']);
             const productSlug = slugify(title);
+            
+            // --- التغيير هنا: إضافة target="_blank" ليفتح في تبويب جديد ---
             const productPageLink = `./product.html?name=${productSlug}`;
             
             const salePriceNum = parsePrice(p['السعر المخفّض']);
             const regularPriceNum = parsePrice(p['السعر']);
-            
             const currentPriceHTML = formatKD(salePriceNum ?? regularPriceNum);
             const oldPriceHTML = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
             const saleBadge = salePriceNum ? '<span class="product__badge">تخفيضات</span>' : '';
 
             return `
                 <div class="product">
-                    <a href="${productPageLink}" class="product__media">
+                    <a href="${productPageLink}" target="_blank" rel="noopener noreferrer" class="product__media">
                         ${saleBadge}
                         <img src="${image}" alt="${title}" loading="lazy" decoding="async">
                     </a>
                     <div class="product__body">
                         <h3 class="product__title">
-                            <a href="${productPageLink}">${title}</a>
+                            <a href="${productPageLink}" target="_blank" rel="noopener noreferrer">${title}</a>
                         </h3>
                         <div class="price">
                             ${oldPriceHTML}
@@ -74,7 +68,7 @@
         };
       
         const renderProducts = (items) => {
-            if (container && Array.isArray(items) && items.length) {
+            if (container && items?.length) {
                 container.innerHTML = `<div class="products">${items.map(createProductCard).join('')}</div>`;
             } else if (container) {
                 container.innerHTML = '<p>عفواً، لم يتم العثور على منتجات حالياً.</p>';
