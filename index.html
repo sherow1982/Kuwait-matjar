@@ -42,24 +42,18 @@
         const parsePrice = (priceStr) => priceStr ? parseFloat(String(priceStr).replace(/[^0-9.]/g, '')) : null;
         const formatKD = (val) => typeof val === 'number' ? new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val) : '';
 
-        /**
-         * --- التغيير الأول: إضافة دالة لإنشاء رابط نصي (Slug) ---
-         * هذه الدالة تحول العنوان إلى رابط صالح للاستخدام في الـ URL.
-         */
         const slugify = (text) => {
             if (!text) return '';
             return text.toString().toLowerCase().trim()
-                .replace(/\s+/g, '-') // استبدال المسافات بـ -
-                .replace(/[^\u0600-\u06FFa-z0-9-]/g, '') // إزالة الأحرف غير المرغوبة
-                .replace(/-+/g, '-'); // إزالة الشرطات المتكررة
+                .replace(/\s+/g, '-')
+                .replace(/[^\u0600-\u06FFa-z0-9-]/g, '')
+                .replace(/-+/g, '-');
         };
 
         const createProductCard = (p = {}) => {
             const title = escapeHTML(p['العنوان']);
             const image = escapeHTML(p['رابط الصورة']);
-            const originalLink = escapeHTML(p['الرابط']);
             
-            // --- التغيير الثاني: إنشاء الرابط الجديد باستخدام الدالة slugify ---
             const productSlug = slugify(title);
             const productPageLink = `./product.html?name=${productSlug}`;
             
@@ -68,6 +62,8 @@
             const currentPrice = formatKD(salePriceNum ?? regularPriceNum);
             const oldPrice = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
 
+            // --- التصحيح الرئيسي هنا ---
+            // جميع الروابط بما فيها زر "عرض التفاصيل" الآن تؤدي إلى صفحة المنتج الداخلية
             return `
                 <div class="product">
                     <div class="product__media">
@@ -75,7 +71,7 @@
                             <img src="${image}" alt="${title}" loading="lazy" decoding="async">
                         </a>
                         <div class="product__hover">
-                            <a href="${originalLink}" target="_blank" rel="noopener noreferrer" class="btn btn--sm">شراء الآن</a>
+                            <a href="${productPageLink}" class="btn btn--sm">عرض التفاصيل</a>
                         </div>
                     </div>
                     <div class="product__body">
