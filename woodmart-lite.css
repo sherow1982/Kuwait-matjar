@@ -114,3 +114,12 @@ html[dir="rtl"] .product__badge { left: 10px; right: auto; }
   .product-info .price { justify-content: center; }
   .product-info { text-align: center; }
 }
+
+/* New Section Styles */
+.features-section { background-color: var(--bg); }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; text-align: center; }
+.feature-item h3 { color: var(--accent); }
+
+.blog-post-summary { border-bottom: var(--border-1) solid; padding-block: 1.5rem; }
+.blog-post-summary h3 { margin-bottom: 0.5rem; }
+.blog-post-summary a:hover { color: var(--accent); }
