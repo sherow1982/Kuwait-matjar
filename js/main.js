@@ -5,21 +5,18 @@ const slugify = (text) => text ? text.toString().toLowerCase().trim().replace(/\
 const formatKD = (val) => typeof val === 'number' ? new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val) : '';
 const parsePrice = (priceStr) => priceStr ? parseFloat(String(priceStr).replace(/[^0-9.]/g, '')) : null;
 
-const generateProductImageLink = (title) => {
-    if (!title) return './placeholder.webp';
-    const imageName = slugify(title);
-    return `./images/${imageName}.webp`;
-};
-
 const createProductCard = (p = {}) => {
     const title = p['العنوان'] || 'منتج غير متوفر';
-    const image = generateProductImageLink(title);
+    const image = p['رابط الصورة'] || './placeholder.webp'; // رابط الصورة الأصلي من JSON
     const productSlug = slugify(title);
     const productPageLink = `./product.html?name=${productSlug}`;
+    
     const salePriceNum = parsePrice(p['السعر المخفّض']);
     const regularPriceNum = parsePrice(p['السعر']);
+    
     const currentPriceHTML = formatKD(salePriceNum || regularPriceNum);
     const oldPriceHTML = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
+    
     let saleBadge = '';
     if (salePriceNum && regularPriceNum && regularPriceNum > salePriceNum) {
         const discount = Math.round(((regularPriceNum - salePriceNum) / regularPriceNum) * 100);
@@ -33,7 +30,7 @@ const createProductCard = (p = {}) => {
                 <img src="${image}" alt="${title}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='./placeholder.webp';">
             </a>
             <div class="product__body">
-                <h3 class="product__title"><a href="${productPageLink}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
+                <div class="product__title"><h3><a href="${productPageLink}" target="_blank" rel="noopener noreferrer">${title}</a></h3></div>
                 <div class="price">${oldPriceHTML}<span>${currentPriceHTML}</span></div>
             </div>
         </div>
@@ -41,7 +38,6 @@ const createProductCard = (p = {}) => {
 };
 
 const renderProducts = (items) => {
-    const placeholder = container.querySelector('.products-placeholder');
     const productsGrid = document.createElement('div');
     productsGrid.className = 'products';
     if (items?.length) {
@@ -49,7 +45,6 @@ const renderProducts = (items) => {
     } else {
         productsGrid.innerHTML = '<p>عفواً، لم يتم العثور على منتجات حالياً.</p>';
     }
-    if(placeholder) placeholder.remove(); // إزالة الهيكل العظمي
     container.appendChild(productsGrid);
 };
 
