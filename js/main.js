@@ -1,14 +1,26 @@
 const DATA_URL = 'https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/data/products-template.json?raw=1';
 const container = document.getElementById('products-container');
 
-const slugify = (text) => text ? text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\u0600-\u06FFa-z0-9-]/g, '').replace(/-+/g, '-') : '';
+/**
+ * دالة محسّنة لإنشاء روابط صديقة لمحركات البحث (slug) تدعم اللغة العربية بشكل كامل.
+ * @param {string} text - النص المراد تحويله (اسم المنتج).
+ * @returns {string} - النص المحوّل إلى رابط.
+ */
+const slugify = (text) => {
+  if (!text) return '';
+  return text.toString().toLowerCase().trim()
+    .replace(/\s+/g, '-')           // استبدال المسافات بـ -
+    .replace(/[^\u0600-\u06FFa-z0-9-]/g, '') // إزالة جميع الأحرف الخاصة ما عدا العربية والإنجليزية والأرقام والشرطات
+    .replace(/-+/g, '-');            // استبدال الشرطات المتعددة بشرطة واحدة
+};
+
 const formatKD = (val) => typeof val === 'number' ? new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val) : '';
 const parsePrice = (priceStr) => priceStr ? parseFloat(String(priceStr).replace(/[^0-9.]/g, '')) : null;
 
 const createProductCard = (p = {}) => {
     const title = p['العنوان'] || 'منتج غير متوفر';
-    const image = p['رابط الصورة'] || './placeholder.webp'; // رابط الصورة الأصلي من JSON
-    const productSlug = slugify(title);
+    const image = p['رابط الصورة'] || './placeholder.webp';
+    const productSlug = slugify(title); // سيتم استخدام الدالة الجديدة هنا
     const productPageLink = `./product.html?name=${productSlug}`;
     
     const salePriceNum = parsePrice(p['السعر المخفّض']);
