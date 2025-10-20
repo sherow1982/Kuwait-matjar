@@ -3,35 +3,92 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدونة المتجر الكويتي - نصائح ومراجعات</title>
+    <title>مدونة المتجر الكويتي - نصائح ومراجعات المنتجات</title>
     <meta name="description" content="اقرأ أحدث المقالات والمراجعات حول المنتجات لمساعدتك على اتخاذ أفضل قرار شراء في الكويت.">
     <link rel="stylesheet" href="./woodmart-lite.css">
     <link rel="icon" href="./favicon.ico">
 </head>
 <body>
     <header class="header">
-        <div class="header__inner container"><a href="/" class="header__logo">العودة للمتجر</a></div>
+        <div class="header__inner container">
+            <a href="/" class="header__logo"><h1>المتجر الكويتي</h1></a>
+            <div class="header__spacer"></div>
+            <nav class="main-nav">
+                <a href="/blog.html">المدونة</a>
+                <a href="/about.html">من نحن</a>
+                <a href="/shipping-policy.html">سياسة الشحن</a>
+            </nav>
+        </div>
     </header>
     <main class="section">
         <div class="container">
-            <h1>مدونة المتجر الكويتي</h1>
-            <p>مقالات ومراجعات لمساعدتك في اختيار أفضل المنتجات لاحتياجاتك.</p>
-            <div id="blog-posts">
-                <article class="blog-post-summary">
-                    <h3><a href="#">أفضل 5 كاميرات مراقبة للمنازل في الكويت لعام 2025</a></h3>
-                    <p>في عالم اليوم، أصبح تأمين منزلك وعائلتك أولوية قصوى. نستعرض في هذا الدليل الشامل أفضل أنواع كاميرات المراقبة المتوفرة في السوق الكويتي، مع مقارنة بين الميزات والأسعار لمساعدتك على اختيار الكاميرا الأنسب لاحتياجاتك وميزانيتك...</p>
-                    <a href="#" class="read-more">اقرأ المزيد &rarr;</a>
-                </article>
-                <article class="blog-post-summary">
-                    <h3><a href="#">كيف تختار الخلاط الكهربائي المناسب لمطبخك؟</a></h3>
-                    <p>سواء كنت من محبي العصائر الطازجة أو تحتاج إلى مساعد في المطبخ لتحضير أشهى الوجبات، فإن اختيار الخلاط المناسب يمكن أن يحدث فرقًا كبيرًا. تعرف على العوامل الرئيسية التي يجب مراعاتها...</p>
-                    <a href="#" class="read-more">اقرأ المزيد &rarr;</a>
-                </article>
+            <h1>مدونة المتجر</h1>
+            <p>مراجعات شاملة ونصائح الخبراء لمنتجاتنا الأكثر مبيعاً في الكويت.</p>
+            <div id="blog-posts-container">
+                <p>جارٍ تحميل المقالات...</p>
             </div>
         </div>
     </main>
     <footer class="footer">
+        <nav class="footer-nav container">
+            <a href="/about.html">من نحن</a>
+            <a href="/shipping-policy.html">سياسة الشحن</a>
+            <a href="/return-policy.html">الاستبدال والاسترجاع</a>
+        </nav>
         <div class="container footer__bottom"><p>&copy; 2025 المتجر الكويتي</p></div>
     </footer>
+    <script type="module">
+        const DATA_URL = 'https://raw.githubusercontent.com/sherow1982/Kuwait-matjar/refs/heads/main/data/products-template.json?raw=1';
+        const container = document.getElementById('blog-posts-container');
+        const slugify = (text) => text ? text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\u0600-\u06FFa-z0-9-]/g, '').replace(/-+/g, '-') : '';
+
+        const createArticle = (p = {}) => {
+            const title = p['العنوان'] || '';
+            const image = p['رابط الصورة'] || '';
+            const description = p['الوصف'] || '';
+            const productSlug = slugify(title);
+            const productPageLink = `./product.html?name=${productSlug}`;
+            const price = p['السعر المخفّض'] || p['السعر'];
+            const whatsappMessage = encodeURIComponent(`مرحباً، أريد الاستفسار عن المنتج: ${title} | السعر: ${price}`);
+            const whatsappLink = `https://wa.me/201110760081?text=${whatsappMessage}`;
+
+            // Generate SEO-rich description for the article
+            const articleText = `هل تبحث عن **${title} في الكويت**؟ يُعتبر هذا المنتج من أفضل الخيارات المتاحة حالياً في السوق الكويتي بفضل ميزاته الرائعة. ${description.substring(0, 150)}...`;
+
+            return `
+                <article class="blog-post-summary">
+                    <a href="${productPageLink}" target="_blank" class="blog-post-thumb"><img src="${image}" alt="${title}" loading="lazy"></a>
+                    <div class="blog-post-content">
+                        <h2><a href="${productPageLink}" target="_blank">${title}</a></h2>
+                        <p>${articleText}</p>
+                        <div class="blog-post-actions">
+                            <a href="${productPageLink}" target="_blank" class="btn">عرض التفاصيل</a>
+                            <a href="${whatsappLink}" target="_blank" class="btn btn-whatsapp">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.61 15.36 3.48 16.84L2 22L7.32 20.55C8.75 21.33 10.37 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 6.45 17.5 2 12.04 2Z"/></svg>
+                                اطلب عبر واتساب
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            `;
+        };
+
+        (async () => {
+            if(container) {
+                try {
+                    const res = await fetch(DATA_URL);
+                    const items = await res.json();
+                    if (items?.length) {
+                        container.innerHTML = items.map(createArticle).join('');
+                    } else {
+                        container.innerHTML = '<p>لا توجد مقالات لعرضها حالياً.</p>';
+                    }
+                } catch (e) {
+                    console.error(e);
+                    container.innerHTML = '<p>حدث خطأ أثناء تحميل المقالات.</p>';
+                }
+            }
+        })();
+    </script>
 </body>
 </html>
