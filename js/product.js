@@ -1,6 +1,18 @@
 const content = document.getElementById('product-content');
 
-const slugify = (text) => text ? text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\u0600-\u06FFa-z0-9-]/g, '').replace(/-+/g, '-') : '';
+/**
+ * دالة محسّنة لإنشاء روابط صديقة لمحركات البحث (slug) تدعم اللغة العربية بشكل كامل.
+ * @param {string} text - النص المراد تحويله (اسم المنتج).
+ * @returns {string} - النص المحوّل إلى رابط.
+ */
+const slugify = (text) => {
+  if (!text) return '';
+  return text.toString().toLowerCase().trim()
+    .replace(/\s+/g, '-')           // استبدال المسافات بـ -
+    .replace(/[^\u0600-\u06FFa-z0-9-]/g, '') // إزالة جميع الأحرف الخاصة ما عدا العربية والإنجليزية والأرقام والشرطات
+    .replace(/-+/g, '-');            // استبدال الشرطات المتعددة بشرطة واحدة
+};
+
 const formatKD = (val) => typeof val === 'number' ? new Intl.NumberFormat('ar-KW', { style: 'currency', currency: 'KWD' }).format(val) : '';
 const parsePrice = (priceStr) => priceStr ? parseFloat(String(priceStr).replace(/[^0-9.]/g, '')) : null;
 
