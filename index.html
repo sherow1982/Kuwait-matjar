@@ -38,15 +38,20 @@
             const title = escapeHTML(p['العنوان']);
             const image = escapeHTML(p['رابط الصورة']);
             const productSlug = slugify(title);
-            
-            // --- التغيير هنا: إضافة target="_blank" ليفتح في تبويب جديد ---
             const productPageLink = `./product.html?name=${productSlug}`;
             
             const salePriceNum = parsePrice(p['السعر المخفّض']);
             const regularPriceNum = parsePrice(p['السعر']);
+            
             const currentPriceHTML = formatKD(salePriceNum ?? regularPriceNum);
             const oldPriceHTML = salePriceNum ? `<s>${formatKD(regularPriceNum)}</s>` : '';
-            const saleBadge = salePriceNum ? '<span class="product__badge">تخفيضات</span>' : '';
+            
+            // --- التغيير هنا: حساب نسبة الخصم ---
+            let saleBadge = '';
+            if (salePriceNum && regularPriceNum && regularPriceNum > salePriceNum) {
+                const discount = Math.round(((regularPriceNum - salePriceNum) / regularPriceNum) * 100);
+                saleBadge = `<span class="product__badge">-${discount}%</span>`;
+            }
 
             return `
                 <div class="product">
