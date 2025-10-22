@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
+  <channel>
+    <title>Matjar Kuwait - Products</title>
+    <link>https://sherow1982.github.io/Kuwait-matjar/</link>
+    <description>Latest products from Matjar Kuwait</description>
+
+    <!-- المنتج الأول -->
+    <item>
+      <g:id>SKU-0001</g:id>
+      <g:title>ساعة ذكية مقاومة للماء</g:title>
+      <g:description>ساعة ذكية مع تتبع اللياقة، إشعارات الهاتف، وبطارية 7 أيام.</g:description>
+      <g:link>https://sherow1982.github.io/Kuwait-matjar/products/ساعة-ذكية-مقاومة-للماء.html</g:link>
+      <g:image_link>https://sherow1982.github.io/Kuwait-matjar/assets/images/smartwatch.jpg</g:image_link>
+      <g:availability>in stock</g:availability>
+      <g:condition>new</g:condition>
+      <g:price>19.90 KWD</g:price>
+      <g:brand>Matjar Kuwait</g:brand>
+      <g:identifier_exists>no</g:identifier_exists>
+      <g:shipping>
+        <g:country>KW</g:country>
+        <g:service>Standard</g:service>
+        <g:price>0.00 KWD</g:price>
+      </g:shipping>
+    </item>
+
+    <!-- المنتج الثاني -->
+    <item>
+      <g:id>SKU-0002</g:id>
+      <g:title>سماعات لاسلكية بخاصية عزل الضوضاء</g:title>
+      <g:description>سماعات بلوتوث خفيفة بميكروفون واضح وعزل فعال للضوضاء.</g:description>
+      <g:link>https://sherow1982.github.io/Kuwait-matjar/products/سماعات-لاسلكية-بخاصية-عزل-الضوضاء.html</g:link>
+      <g:image_link>https://sherow1982.github.io/Kuwait-matjar/assets/images/bt-headphones.jpg</g:image_link>
+      <g:availability>in stock</g:availability>
+      <g:condition>new</g:condition>
+      <g:price>12.50 KWD</g:price>
+      <g:brand>Matjar Kuwait</g:brand>
+      <g:identifier_exists>no</g:identifier_exists>
+      <g:shipping>
+        <g:country>KW</g:country>
+        <g:service>Standard</g:service>
+        <g:price>0.00 KWD</g:price>
+      </g:shipping>
+    </item>
+
+    <!-- سيتم إضافة المزيد من المنتجات هنا تلقائيًا بواسطة السكربت -->
+
+  </channel>
+</rss>
