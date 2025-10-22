@@ -55,7 +55,6 @@ def build_feed(items: list[dict], base_url: str, out_file: Path) -> None:
         g_avail = map_availability(get_first(it, ["مدى التوفّر", "availability"], "متوفر"))
         
         # --- بناء الرابط الصحيح (هذا هو التعديل الأهم) ---
-        # يقوم بترميز اسم المنتج ليصبح صالحًا للاستخدام في الرابط
         product_param = urlencode({"name": title})
         product_link = f"{base_url.rstrip('/')}/product.html?{product_param}"
         # ----------------------------------------------------
