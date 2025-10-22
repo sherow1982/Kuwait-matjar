@@ -10,7 +10,7 @@
       <g:id>SKU-0001</g:id>
       <g:title>ساعة ذكية مقاومة للماء</g:title>
       <g:description>ساعة ذكية مع تتبع اللياقة، إشعارات الهاتف، وبطارية 7 أيام.</g:description>
-      <g:link>https://sherow1982.github.io/Kuwait-matjar/products/ساعة-ذكية-مقاومة-للماء.html</g:link>
+      <g:link>https://sherow1982.github.io/Kuwait-matjar/product.html?name=%D8%B3%D8%A7%D8%B9%D8%A9+%D8%B0%D9%83%D9%8A%D8%A9+%D9%85%D9%82%D8%A7%D9%88%D9%85%D8%A9+%D9%84%D9%84%D9%85%D8%A7%D8%A1</g:link>
       <g:image_link>https://sherow1982.github.io/Kuwait-matjar/assets/images/smartwatch.jpg</g:image_link>
       <g:availability>in stock</g:availability>
       <g:condition>new</g:condition>
@@ -29,7 +29,7 @@
       <g:id>SKU-0002</g:id>
       <g:title>سماعات لاسلكية بخاصية عزل الضوضاء</g:title>
       <g:description>سماعات بلوتوث خفيفة بميكروفون واضح وعزل فعال للضوضاء.</g:description>
-      <g:link>https://sherow1982.github.io/Kuwait-matjar/products/سماعات-لاسلكية-بخاصية-عزل-الضوضاء.html</g:link>
+      <g:link>https://sherow1982.github.io/Kuwait-matjar/product.html?name=%D8%B3%D9%85%D8%A7%D8%B9%D8%A7%D8%AA+%D9%84%D8%A7%D8%B3%D9%84%D9%83%D9%8A%D8%A9+%D8%A8%D8%AE%D8%A7%D8%B5%D9%8A%D8%A9+%D8%B9%D8%B2%D9%84+%D8%A7%D9%84%D8%B6%D9%88%D8%B6%D8%A7%D8%A1</g:link>
       <g:image_link>https://sherow1982.github.io/Kuwait-matjar/assets/images/bt-headphones.jpg</g:image_link>
       <g:availability>in stock</g:availability>
       <g:condition>new</g:condition>
@@ -42,8 +42,8 @@
         <g:price>0.00 KWD</g:price>
       </g:shipping>
     </item>
-
-    <!-- سيتم إضافة المزيد من المنتجات هنا تلقائيًا بواسطة السكربت -->
+    
+    <!-- لإضافة منتج جديد: انسخ قسم <item> بالكامل والصقه هنا ثم قم بتغيير البيانات -->
 
   </channel>
 </rss>
